@@ -47,7 +47,7 @@
                 "echo '' | sudo tee -a /etc/systemd/system/javamultistage.service",
                 "echo '[Service]' | sudo tee -a /etc/systemd/system/javamultistage.service",
                 "echo 'User=ubuntu' | sudo tee -a /etc/systemd/system/javamultistage.service",
-                "echo 'ExecStart=/usr/bin/java -jar /opt/javamultistage/app.jar' | sudo tee -a /etc/systemd/system/javamultistage.service",
+                "echo 'ExecStart=java -jar /opt/javamultistage/app.jar' | sudo tee -a /etc/systemd/system/javamultistage.service",
                 "echo 'SuccessExitStatus=143' | sudo tee -a /etc/systemd/system/javamultistage.service",
                 "echo 'Restart=on-failure' | sudo tee -a /etc/systemd/system/javamultistage.service",
                 "echo 'RestartSec=10' | sudo tee -a /etc/systemd/system/javamultistage.service",

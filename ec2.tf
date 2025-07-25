@@ -1,6 +1,6 @@
 resource "aws_instance" "Demo_Web_Public_Instance" {
   count                  = var.env == "Dev" ? 1 : 3
-  ami                    = lookup(var.ami, var.region)
+  ami                    = var.ami
   key_name               = lookup(var.key, var.region)
   instance_type          = var.instance_type
   subnet_id              = element(aws_subnet.Demo-Public-Subnets.*.id, count.index)
