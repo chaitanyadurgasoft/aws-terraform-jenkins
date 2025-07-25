@@ -36,7 +36,6 @@ pipeline {
             steps {
                 echo 'Starting AMI build with Packer...'
                 sh '''
-                    packer init .
                     packer validate  --var-file packer-vars.json ${PACKER_TEMPLATE}
                     packer build --var-file packer-vars.json ${PACKER_TEMPLATE}
                 '''
