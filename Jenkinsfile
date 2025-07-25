@@ -36,6 +36,7 @@ pipeline {
             steps {
                 echo 'Starting AMI build with Packer...'
                 sh '''
+                    packer plugins install github.com/hashicorp/amazon
                     packer validate  --var-file packer-vars.json ${PACKER_TEMPLATE}
                     packer build --var-file packer-vars.json ${PACKER_TEMPLATE}
                 '''
