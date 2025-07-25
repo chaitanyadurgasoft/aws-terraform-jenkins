@@ -29,5 +29,27 @@ pipeline {
                 }
             }
         }
+        stage('AMI Create with Packer') {
+            when {
+                expression { params.BUILD_AMI == 'yes' }
+            }
+            steps {
+                echo 'Starting AMI build with Packer...'
+                sh '''
+                    packer init .
+                    packer validate  --var-file packer-vars.json ${PACKER_TEMPLATE}
+                    packer build --var-file packer-vars.json ${PACKER_TEMPLATE}
+                '''
+            }
+        }
+
+        stage('Skip AMI Build') {
+            when {
+                expression { params.BUILD_AMI == 'no' }
+            }
+            steps {
+                echo 'BUILD_AMI is set to no. Skipping AMI build.'
+            }
+        }
     }
 }
