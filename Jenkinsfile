@@ -34,11 +34,16 @@ pipeline {
                 expression { params.BUILD_AMI == 'yes' }
             }
             steps {
-                echo 'Starting AMI build with Packer...'
+                echo 'Running Packer to create AMI and extract AMI ID...'
                 sh '''
-                    packer plugins install github.com/hashicorp/amazon
-                    packer validate  --var-file packer-vars.json ${PACKER_TEMPLATE}
-                    packer build --var-file packer-vars.json ${PACKER_TEMPLATE}
+                    packer validate --var-file packer-vars.json ${PACKER_TEMPLATE}
+                    
+                    # Run Packer build and capture output
+                    packer build --var-file packer-vars.json ${PACKER_TEMPLATE} | tee packer_output.log
+
+                    # Extract AMI ID and save to a file
+                    grep -oE 'ami-[a-zA-Z0-9]+' packer_output.log | tail -1 > ${AMI_ID_FILE}
+                    echo "AMI ID extracted: $(cat ${AMI_ID_FILE})"
                 '''
             }
         }
