@@ -27,9 +27,9 @@ pipeline {
                     echo 'Checking if Packer is installed...'
                     def status = sh(script: 'which packer || echo "notfound"', returnStdout: true).trim()
                     if (status == 'notfound') {
-                        error "❌ Packer is not installed on the agent."
+                        error "Packer is not installed on the agent."
                     } else {
-                        echo "✅ Packer found at: ${status}"
+                        echo " Packer found at: ${status}"
                         sh 'packer --version'
                     }
                 }
@@ -41,13 +41,10 @@ pipeline {
                 expression { params.BUILD_AMI == 'yes' }
             }
             steps {
-                echo '🏗️ Running Packer to build AMI...'
+                echo ' Running Packer to build AMI...'
                 sh '''
                     packer validate --var-file packer-vars.json ${PACKER_TEMPLATE}
                     packer build --var-file packer-vars.json ${PACKER_TEMPLATE} | tee packer_output.log
-
-                    # Extract AMI ID from packer log and save to terraform.tfvars
-                    echo "✅ AMI ID saved to terraform.tfvars"
                 '''
             }
         }
